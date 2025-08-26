@@ -17,8 +17,8 @@ env:
   DOCKERFILE: EasyVault.Server/Dockerfile
 
 jobs:
-  build:
-    name: Build Docker image
+  build-and-deploy:
+    name: Build and Deploy
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -107,13 +107,6 @@ jobs:
           name: nupkg
           path: Sources/EasyVault.SDK/nupkg
 
-  release:
-    name: Publish and Release
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/main' # only run job if on the master branch
-
-    steps:
       #Push NuGet package to GitHub packages
       - name: Download nuget package artifact
         uses: actions/download-artifact@v4.0.0
@@ -122,7 +115,7 @@ jobs:
       - name: Prep packages
         run: dotnet nuget add source --username bvdcode --password ${{ secrets.DEPLOY_GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/bvdcode/index.json"
       - name: Push package to GitHub packages
-        if: needs.build.outputs.CommitsSinceVersionSource > 0 #Only release if there has been a commit/version change
+        if: steps.gitversion.outputs.CommitsSinceVersionSource > 0 #Only release if there has been a commit/version change
         run: |
           dotnet nuget push *.nupkg --skip-duplicate --api-key ${{ secrets.DEPLOY_GITHUB_TOKEN }} --source "github"
           dotnet nuget push *.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
