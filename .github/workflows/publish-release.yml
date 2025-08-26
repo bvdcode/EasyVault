@@ -12,9 +12,9 @@ on:
 
 env:
   CONTEXT_DIR: Sources
-  DOCKERFILE: Dockerfile
   DOCKER_NAMESPACE: bvdcode
   DOCKER_IMAGE_NAME: easyvault
+  DOCKERFILE: EasyVault.Server/Dockerfile
 
 jobs:
   build:
