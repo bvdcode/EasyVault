@@ -1,7 +1,7 @@
 using System.Text;
+using EasyVault.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using EasyExtensions.Extensions;
-using EasyVault.Server.Models;
 using EasyVault.Server.Database;
 using EasyVault.Server.Services;
 using Microsoft.EntityFrameworkCore;
@@ -53,7 +53,7 @@ namespace EasyVault.Server.Controllers
             AccessEvent accessEvent = new()
             {
                 IpAddress = ip,
-                Route = Request.Path.ToString().Replace(key, new string('*', key.Length)),
+                Route = Request.Path.ToString().Replace(key, new string('*', key.Length), StringComparison.InvariantCultureIgnoreCase),
                 UserAgent = userAgent,
                 Method = nameof(UpdateVaultAsync)
             };
