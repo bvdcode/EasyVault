@@ -53,8 +53,7 @@ Settings in `Sources/EasyVault.Server/appsettings.json`:
 
 ```json
 {
-  "SqliteConnectionString": "Data Source=/data/easyvault.db;Cache=Shared;Foreign Keys=True;Pooling=True;Mode=ReadWriteCreate;",
-  "AllowedOrigins": ["http://localhost:5173", "https://vault.company.name"]
+  "SqliteConnectionString": "Data Source=/data/easyvault.db;Cache=Shared;Foreign Keys=True;Pooling=True;Mode=ReadWriteCreate;"
 }
 ```
 
