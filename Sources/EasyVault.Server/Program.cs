@@ -17,7 +17,6 @@ namespace EasyVault.Server
                 ?? throw new ArgumentNullException(null, "Allowed origins cannot be null.");
             builder.Services.AddControllers();
             builder.Services.AddPostgresDbContext<AppDbContext>(builder.Configuration)
-                .AddScoped<INotificationSender, MattermostNotifications>()
                 .AddDefaultCorsWithOrigins(corsOrigins)
                 .AddSingleton<IVault, MemoryVaultService>()
                 .AddHealthChecks()

@@ -1,27 +1,16 @@
-﻿namespace EasyVault.Server.Services
+﻿using EasyVault.Server.Models;
+
+namespace EasyVault.Server.Services
 {
-    public class MemoryVaultService(INotificationSender _notifications) : IVault
+    public class MemoryVaultService() : IVault
     {
         public bool IsSealed => GetSealedStatus();
 
         private static readonly Dictionary<Guid, VaultSecret> _secrets = [];
-        private static bool notificationState = true;
 
-        private bool GetSealedStatus()
+        private static bool GetSealedStatus()
         {
-            bool isSealed = _secrets.Count == 0;
-            if (isSealed && notificationState)
-            {
-                _notifications.SendNotificationAsync("Vault", "Sealed!", isError: true)
-                    .ContinueWith((t) =>
-                    {
-                        if (t.IsCompleted && t.Exception == null)
-                        {
-                            notificationState = false;
-                        }
-                    });
-            }
-            return isSealed;
+            return _secrets.Count == 0;
         }
 
         public VaultSecret GetSecrets(Guid keyId)
@@ -50,11 +39,6 @@
             foreach (var secret in secrets)
             {
                 _secrets[secret.KeyId] = secret;
-            }
-            if (!notificationState)
-            {
-                _notifications.SendNotificationAsync("Vault", "Vault is unsealed. Secrets are now accessible.", isError: false);
-                notificationState = true;
             }
         }
     }

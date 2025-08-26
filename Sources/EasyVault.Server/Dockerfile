@@ -12,8 +12,6 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["EasyVault.Server/EasyVault.Server.csproj", "EasyVault.Server/"]
 COPY ["easyvault.client/easyvault.client.esproj", "easyvault.client/"]
-RUN echo "nuget: $NUGET_API_KEY"
-RUN dotnet nuget add source "https://git.company.name/api/v4/groups/7/-/packages/nuget/index.json" --name Gitlab --username nuget --password sMhNxy6hpfvKoh8Vrbos --store-password-in-clear-text
 RUN dotnet restore "./EasyVault.Server/EasyVault.Server.csproj"
 COPY . .
 WORKDIR "/src/EasyVault.Server"

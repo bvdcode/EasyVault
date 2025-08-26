@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
-using EasyExtensions.Extensions;
 using EasyVault.Server.Models;
+using EasyExtensions.Extensions;
 using System.Security.Cryptography;
 using System.ComponentModel.DataAnnotations.Schema;
 using EasyExtensions.EntityFrameworkCore.Abstractions;

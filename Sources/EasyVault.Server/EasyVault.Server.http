@@ -1,6 +1,6 @@
 @EasyVault.Server_HostAddress = http://localhost:5082
 
-GET {{EasyVault.Server_HostAddress}}/weatherforecast/
+GET {{EasyVault.Server_HostAddress}}/keys/
 Accept: application/json
 
 ###

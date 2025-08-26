@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>Company.EasyVault.SDK</Title>
+		<Authors>Vadim Belov</Authors>
+		<Company>Company RD</Company>
+		<Description>.NET Standard library for CompanyRD Vault access.</Description>
+		<PackageProjectUrl>https://git.company.domain/internal/easyvault</PackageProjectUrl>
+		<PackageIcon>vault.png</PackageIcon>
+		<PackageIconUrl>https://static.company.domain/file/7e9868e0-af9d-44d5-8a93-666265db951f/vault.png</PackageIconUrl>
+		<RepositoryUrl>https://git.company.domain/internal/easyvault.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<SignAssembly>True</SignAssembly>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<VersionPrefix>2.0.4</VersionPrefix>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="vault.png" Pack="true" PackagePath="" />
+		<PackageReference Include="System.Text.Json" Version="9.0.7" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.7" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.7" />
+	</ItemGroup>
+</Project>
