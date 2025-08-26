@@ -96,7 +96,7 @@ const VaultEntryEditForm = forwardRef<
                       navigator.clipboard.writeText(
                         "https://" +
                           window.location.hostname +
-                          "/api/v2/vault/secrets/" +
+                          "/api/v1/vault/secrets/" +
                           formData.keyId
                       );
                       toast.info(t("vaultEdit.linkCopied"));

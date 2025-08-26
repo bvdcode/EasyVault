@@ -33,7 +33,7 @@ namespace EasyVault.SDK
         /// <returns>Dictionary of secrets.</returns>
         public Dictionary<string, string> GetSecrets()
         {
-            const string url = "/api/v2/vault/secrets/{0}";
+            const string url = "/api/v1/vault/secrets/{0}";
             var response = _httpClient.GetAsync(string.Format(url, _apiKey)).Result;
             if (response.IsSuccessStatusCode)
             {

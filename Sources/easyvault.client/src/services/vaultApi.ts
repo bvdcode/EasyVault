@@ -1,7 +1,7 @@
 import axios from "axios";
 import { VaultData } from "../types";
 
-const API_BASE_URL = "/api/v2";
+const API_BASE_URL = "/api/v1";
 
 export default class VaultApiService {
   /**
