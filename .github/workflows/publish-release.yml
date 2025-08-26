@@ -7,7 +7,7 @@ on:
       - "Sources/EasyVault.SDK/**"
       - "Sources/easyvault.client/**"
       - "Sources/EasyVault.Server/**"
-      - ".github/workflows/publish-release.yaml"
+      - ".github/workflows/publish-release.yml"
   workflow_dispatch:
 
 env:
