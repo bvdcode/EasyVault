@@ -47,7 +47,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: nupkg
-          path: Sources/nupkg
+          path: Sources/EasyVault.SDK/nupkg
 
   release:
     runs-on: ubuntu-latest
