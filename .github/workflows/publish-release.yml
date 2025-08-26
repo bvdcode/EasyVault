@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths:
-      - "Sources/EasyVault.SDK"
+      - "Sources/EasyVault.SDK/**"
+      - ".github/workflows/publish-release.yaml"
       
 jobs:
   build:
