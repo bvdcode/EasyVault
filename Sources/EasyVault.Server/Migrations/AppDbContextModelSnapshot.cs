@@ -43,13 +43,6 @@ namespace EasyVault.Server.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("route");
 
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("BLOB")
-                        .HasColumnName("row_version");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT")
                         .HasColumnName("updated_at");

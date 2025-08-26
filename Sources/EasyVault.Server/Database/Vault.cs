@@ -13,7 +13,7 @@ namespace EasyVault.Server.Database
     {
         [Timestamp]
         [Column("row_version")]
-        public byte[] RowVersion { get; set; } = [];
+        public byte[] RowVersion { get; set; } = BitConverter.GetBytes(DateTime.UtcNow.Ticks);
 
         [Column("secret_key_hash_sha512")]
         public string SecretKeyHashSha512 { get; set; } = string.Empty;

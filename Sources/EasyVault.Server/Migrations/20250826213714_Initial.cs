@@ -16,7 +16,6 @@ namespace EasyVault.Server.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    row_version = table.Column<byte[]>(type: "BLOB", rowVersion: true, nullable: false),
                     ip_address = table.Column<string>(type: "TEXT", nullable: false),
                     route = table.Column<string>(type: "TEXT", nullable: false),
                     user_agent = table.Column<string>(type: "TEXT", nullable: false),

@@ -7,10 +7,6 @@ namespace EasyVault.Server.Database
     [Table("access_events")]
     public class AccessEvent : BaseEntity<Guid>
     {
-        [Timestamp]
-        [Column("row_version")]
-        public byte[] RowVersion { get; set; } = [];
-
         [Column("ip_address")]
         public string IpAddress { get; set; } = string.Empty;
 
