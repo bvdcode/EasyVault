@@ -1,117 +1,122 @@
-[![CI](https://github.com/bvdcode/EasyVault/actions/workflows/publish-release.yml/badge.svg)](https://github.com/bvdcode/EasyVault/actions/workflows/publish-release.yml)
-[![Release](https://img.shields.io/github/v/release/bvdcode/EasyVault?sort=semver)](https://github.com/bvdcode/EasyVault/releases)
-[![Docker Pulls](https://img.shields.io/docker/pulls/bvdcode/EasyVault)](https://hub.docker.com/r/bvdcode/EasyVault)
-[![Image Size](https://img.shields.io/docker/image-size/bvdcode/EasyVault/latest)](https://hub.docker.com/r/bvdcode/EasyVault/tags)
-[![CodeFactor](https://www.codefactor.io/repository/github/bvdcode/EasyVault/badge)](https://www.codefactor.io/repository/github/bvdcode/EasyVault)
-[![Nuget](https://img.shields.io/nuget/dt/EasyVault?color=%239100ff)](https://www.nuget.org/packages/EasyVault/)
-[![Static Badge](https://img.shields.io/badge/fuget-f88445?logo=readme&logoColor=white)](https://www.fuget.org/packages/EasyVault)
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bvdcode/EasyVault/.github%2Fworkflows%2Fpublish-release.yml)](https://github.com/bvdcode/EasyVault/actions)
-[![NuGet version (EasyVault)](https://img.shields.io/nuget/v/EasyVault.svg?label=stable)](https://www.nuget.org/packages/EasyVault/)
-![GitHub repo size](https://img.shields.io/github/repo-size/bvdcode/EasyVault)
+![CI](https://github.com/bvdcode/EasyVault/actions/workflows/publish-release.yml/badge.svg)
 [![License](https://img.shields.io/github/license/bvdcode/EasyVault)](LICENSE)
 
 # EasyVault
 
-> A pragmatic secrets bag for developers who just want it to work.
+Lightweight secrets storage service for developers: simple REST API, encrypted data storage in DB and minimal SDK for .NET.
 
-**EasyVault** is a lightweight secrets storage service. No endless unseal steps, no enterprise overkill, no GitLab-variable mess.
-Just a simple REST API + SDK that lets you encrypt, store and fetch application secrets with minimal friction.
+## What's inside
 
----
+- AES-256 (PBKDF2-SHA256) for data encryption in DB; key is not stored (only SHA-512 password hash is saved).
+- IP and User-Agent based access restrictions for secrets.
+- SQLite by default, migrations are applied automatically.
+- Health-check at `/api/v1/health` endpoint.
+- Simple .NET SDK (Dictionary and typed property mapping).
 
-## ✨ Features
+## Quick start
 
-- 🚀 **Zero setup pain** – single container, Postgres or SQLite inside.
-- 🔑 **Client-side encryption** – secrets are encrypted before hitting the DB; server never sees plaintext.
-- 🌐 **Access rules** – restrict by IP ranges, User-Agent, or extra headers.
-- 🛠 **NuGet SDK** – drop into .NET projects, async API, DI-friendly.
-- 📦 **Batteries included** – migrations, health checks, simple ENV config.
-- 🐒 **No bullshit** – no plugins, no manual unseals, no 50-page manuals.
+In Docker (locally):
 
----
+```powershell
+# Build image
+docker build -t easyvault:local -f .\Sources\EasyVault.Server\Dockerfile .\Sources
 
-## 🛠 Quick start
-
-### Docker Compose
-
-```yaml
-services:
-  easyvault:
-    image: bvdcode/easyvault:latest
-    volumes:
-      - ev_data:/data
+# Run container
+docker run --name easyvault -p 8080:8080 -v easyvault_data:/data easyvault:local
 ```
 
-Bring it up:
+Local run without Docker:
 
-```bash
-docker compose up -d
+```powershell
+cd .\Sources\EasyVault.Server
+dotnet run
 ```
 
----
+By default, server listens on port `8080`. DB path: `/data/easyvault.db` (for Docker run).
 
-## 🔑 Using the API
+## Configuration
 
-### Add a secret
-
-```http
-POST /api/v1/vault/my-key
-Content-Type: application/json
-
-{
-  "secrets": {
-    "DB_PASSWORD": "supersecret",
-    "API_TOKEN": "abcdef123"
-  }
-}
-```
-
-### Fetch secrets
-
-```http
-GET /api/v1/vault/secrets/my-key
-```
-
-Response:
+Settings in `Sources/EasyVault.Server/appsettings.json`:
 
 ```json
 {
-  "DB_PASSWORD": "supersecret",
-  "API_TOKEN": "abcdef123"
+  "SqliteConnectionString": "Data Source=/data/easyvault.db;Cache=Shared;Foreign Keys=True;Pooling=True;Mode=ReadWriteCreate;",
+  "AllowedOrigins": [
+    "http://localhost:5173",
+    "https://vault.company.name"
+  ]
 }
 ```
 
-Access is checked against your IP / UA / headers config.
+These values can be overridden with ASP.NET Core environment variables.
 
----
+## API (brief)
 
-## 📦 SDK for .NET
+1) Create/update "vault" (encrypt and save):
 
-Install via NuGet:
+```
+POST /api/v1/vault/{password}
+Content-Type: application/json
 
-```bash
-dotnet add package EasyVault.SDK
+[
+  {
+    "keyId": "b7c1e6b6-4c5a-4c9c-9d31-0bb2d6bf9b4a",
+    "appName": "MyApp",
+    "values": { "DB_PASSWORD": "supersecret", "API_TOKEN": "abcdef" },
+    "allowedAddresses": ["127.0.0.1", "10.0.*"],
+    "allowedUserAgents": ["PostmanRuntime", "MyService/*"]
+  }
+]
 ```
 
-Usage:
+2) Get secrets by `keyId` (access granted by IP/UA; "vault" must be "unsealed" after request to step 1):
+
+```
+GET /api/v1/vault/secrets/{keyId}?format=json|plain
+```
+
+- `format=json` — returns `{ "KEY": "VALUE" }`.
+- `format=plain` — returns strings like `KEY=VALUE`.
+
+Note: password (`{password}`) is used only for encryption/decryption and is not stored in DB (only SHA-512 hash is stored).
+
+## .NET SDK
+
+Client usage example:
 
 ```csharp
-var client = new EasyVaultClient("https://vault.mycompany.dev", "my-key");
-var secrets = await client.GetSecretsAsync();
-Console.WriteLine(secrets["DB_PASSWORD"]);
+using EasyVault.SDK;
+
+var client = new EasyVaultClient("http://localhost:8080", new Guid("b7c1e6b6-4c5a-4c9c-9d31-0bb2d6bf9b4a"));
+
+// Key-value dictionary
+var map = client.GetSecrets();
+
+// Typed mapping by property names (case-insensitive)
+var typed = client.GetSecrets<MySecrets>();
+
+public class MySecrets
+{
+    public string DB_PASSWORD { get; set; } = string.Empty;
+    public string API_TOKEN { get; set; } = string.Empty;
+}
 ```
 
----
+## Development
 
-## ⚡ Roadmap
+- Server: `Sources/EasyVault.Server` — ASP.NET Core 9.0, SQLite.
+- Web client (optional): `Sources/easyvault.client` — Vite + React.
+- Tests: `Sources/EasyVault.Tests`.
 
-- [ ] Optional PSK request signing (HMAC)
-- [ ] Audit logs (without secrets)
-- [ ] Admin UI for quick edits
-- [ ] Helm chart
+```powershell
+cd .\Sources
+dotnet build
+dotnet test
 
----
+# frontend (optional)
+cd .\easyvault.client; npm i; npm run dev
+```
 
-## 📜 License
+## License
 
-MIT.
+MIT. See [LICENSE](LICENSE) file.
