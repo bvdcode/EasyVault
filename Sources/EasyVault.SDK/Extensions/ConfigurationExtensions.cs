@@ -24,16 +24,23 @@ namespace EasyVault.SDK.Extensions
         public static ConfigurationManager AddSecrets(this ConfigurationManager configuration, string serverUrlKey = "VaultApiUrl",
             string configurationKey = "VaultApiKey", bool throwIfError = true, bool ignoreInDevelopment = true)
         {
+            // Try flat key first, then nested section key as fallback
             string? keyValue = configuration[configurationKey];
+            if (string.IsNullOrWhiteSpace(keyValue))
+            {
+                keyValue = configuration["Vault:ApiKey"];
+            }
             if (string.IsNullOrWhiteSpace(keyValue))
             {
                 throw new ArgumentException(configurationKey, $"Configuration key '{configurationKey}' is not set.");
             }
+
             bool parsed = Guid.TryParse(keyValue, out Guid apiKey);
             if (!parsed)
             {
                 throw new ArgumentException(configurationKey, $"Configuration key '{configurationKey}' is not a valid GUID.");
             }
+
             if (ignoreInDevelopment)
             {
                 bool isDevelopment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
@@ -42,11 +49,18 @@ namespace EasyVault.SDK.Extensions
                     return configuration;
                 }
             }
+
+            // Try flat key first, then nested section key as fallback
             string? serverUrl = configuration[serverUrlKey];
+            if (string.IsNullOrWhiteSpace(serverUrl))
+            {
+                serverUrl = configuration["Vault:ApiUrl"];
+            }
             if (string.IsNullOrWhiteSpace(serverUrl))
             {
                 throw new ArgumentException(serverUrlKey, $"Configuration key '{serverUrlKey}' is not set.");
             }
+
             EasyVaultClient client = new EasyVaultClient(serverUrl, apiKey);
             try
             {
