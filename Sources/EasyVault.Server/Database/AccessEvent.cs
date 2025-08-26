@@ -1,11 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using EasyExtensions.EntityFrameworkCore.Abstractions;
 
 namespace EasyVault.Server.Database
 {
     [Table("access_events")]
-    public class AccessEvent : BaseEntity
+    public class AccessEvent : BaseEntity<Guid>
     {
+        [Timestamp]
+        [Column("row_version")]
+        public byte[] RowVersion { get; set; } = [];
+
         [Column("ip_address")]
         public string IpAddress { get; set; } = string.Empty;
 
