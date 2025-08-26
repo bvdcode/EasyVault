@@ -2,20 +2,28 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<Nullable>enable</Nullable>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Title>Company.EasyVault.SDK</Title>
 		<Authors>Vadim Belov</Authors>
-		<Company>Company RD</Company>
-		<Description>.NET Standard library for CompanyRD Vault access.</Description>
-		<PackageProjectUrl>https://git.company.domain/internal/easyvault</PackageProjectUrl>
-		<PackageIcon>vault.png</PackageIcon>
-		<PackageIconUrl>https://static.company.domain/file/7e9868e0-af9d-44d5-8a93-666265db951f/vault.png</PackageIconUrl>
-		<RepositoryUrl>https://git.company.domain/internal/easyvault.git</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<SignAssembly>True</SignAssembly>
+		<Company>bvdcode</Company>
+		<Product>EasyVault</Product>
+		<Description>.NET Standard library for EasyVault access.</Description>
+		<Copyright>Copyright © Vadim Belov 2025</Copyright>
+		<Summary>
+			EasyVault is a lightweight secrets storage service designed for teams that are tired of over-engineered vaults and messy GitLab variables.
+		</Summary>
 		<NeutralLanguage>en-US</NeutralLanguage>
-		<VersionPrefix>2.0.4</VersionPrefix>
+		<Title>EasyVault</Title>
+		<PackageId>EasyVault</PackageId>
+		<PackageTags>ASP.NET,Vault,Secrets,Database,Extensions</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>vault.png</PackageIcon>
+		<PackageIconUrl>https://media.githubusercontent.com/media/bvdcode/EasyVault/refs/heads/main/Sources/EasyVault.SDK/vault.png</PackageIconUrl>
+		<PackageProjectUrl>https://github.com/bvdcode/EasyVault</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/bvdcode/EasyVault.git</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -23,5 +31,6 @@
 		<PackageReference Include="System.Text.Json" Version="9.0.8" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.8" />
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.8" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
 	</ItemGroup>
 </Project>

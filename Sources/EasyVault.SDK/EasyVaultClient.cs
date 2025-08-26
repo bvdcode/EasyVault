@@ -11,17 +11,11 @@ namespace EasyVault.SDK
     {
         private readonly Guid _apiKey;
         private readonly HttpClient _httpClient = new HttpClient();
-        private const string defaultBaseUrl = "https://vault.company.domain";
-
-        /// <summary>
-        /// Initializes a new instance of the EasyVaultClient class with the default base URL.
-        /// </summary>
-        public EasyVaultClient(Guid apiKey) : this(apiKey, defaultBaseUrl) { }
 
         /// <summary>
         /// Initializes a new instance of the EasyVaultClient class with the specified base URL.
         /// </summary>
-        public EasyVaultClient(Guid apiKey, string baseUrl)
+        public EasyVaultClient(string baseUrl, Guid apiKey)
         {
             if (apiKey == Guid.Empty)
             {
@@ -75,7 +69,8 @@ namespace EasyVault.SDK
 
         private Dictionary<string, string> Parse(string result)
         {
-            return System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(result)!;
+            return System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(result)
+                ?? throw new InvalidOperationException("Failed to parse secrets.");
         }
     }
 }

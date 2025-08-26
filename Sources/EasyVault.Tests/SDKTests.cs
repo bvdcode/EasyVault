@@ -4,6 +4,7 @@ namespace EasyVault.Tests
 {
     public class SDKTests
     {
+        private const string baseUrl = "https://easyvault.example.com";
         private const string testApiKey = "a8a7bee1-1234-1234-1234-38d173a5a6fe";
         private const string remoteKey = "TestKey";
         private const string remoteValue = "TestValue";
@@ -12,7 +13,7 @@ namespace EasyVault.Tests
         public void GetSecrets_ShouldReturnSecrets_WhenValidApiKeyProvided()
         {
             // Arrange
-            var client = new EasyVaultClient(Guid.Parse(testApiKey));
+            var client = new EasyVaultClient(baseUrl, Guid.Parse(testApiKey));
             var expected = new Dictionary<string, string>
             {
                 { remoteKey, remoteValue }
@@ -28,7 +29,7 @@ namespace EasyVault.Tests
         public void GetSecretsGeneric_ShouldReturnTypedSecrets_WhenValidApiKeyProvided()
         {
             // Arrange
-            var client = new EasyVaultClient(Guid.Parse(testApiKey));
+            var client = new EasyVaultClient(baseUrl, Guid.Parse(testApiKey));
 
             // Act
             var result = client.GetSecrets<TestSecretConfig>();
@@ -42,7 +43,7 @@ namespace EasyVault.Tests
         public void Constructor_ShouldThrowArgumentException_WhenEmptyApiKeyProvided()
         {
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => new EasyVaultClient(Guid.Empty));
+            Assert.Throws<ArgumentException>(() => new EasyVaultClient(baseUrl, Guid.Empty));
         }
 
         [Test]
@@ -53,7 +54,7 @@ namespace EasyVault.Tests
 
             // Act
             // Note: This test is limited since we can't easily verify the internal HttpClient's BaseAddress
-            var client = new EasyVaultClient(Guid.Parse(testApiKey), customUrl);
+            var client = new EasyVaultClient(customUrl, Guid.Parse(testApiKey));
 
             // Assert
             Assert.That(client, Is.Not.Null);
@@ -64,7 +65,7 @@ namespace EasyVault.Tests
         public void GetSecretsGeneric_ShouldMapPropertiesCaseInsensitive()
         {
             // Arrange
-            var client = new EasyVaultClient(Guid.Parse(testApiKey));
+            var client = new EasyVaultClient(baseUrl, Guid.Parse(testApiKey));
 
             // Act
             var result = client.GetSecrets<TestSecretConfigDifferentCase>();

@@ -21,7 +21,7 @@ namespace EasyVault.SDK.Extensions
         /// <exception cref="ArgumentException">Thrown when the configuration key is not set or is not a valid GUID.</exception>
         /// <exception cref="InvalidOperationException">Thrown when no secrets are found for the API key.</exception>
         public static ConfigurationManager AddSecrets(this ConfigurationManager configuration,
-            string configurationKey = "EasyVaultApiKey", bool throwIfError = true, bool ignoreInDevelopment = true)
+            string configurationKey = "VaultApiKey", bool throwIfError = true, bool ignoreInDevelopment = true)
         {
             string? keyValue = configuration[configurationKey];
             if (string.IsNullOrWhiteSpace(keyValue))
@@ -41,7 +41,7 @@ namespace EasyVault.SDK.Extensions
                     return configuration;
                 }
             }
-            EasyVaultClient client = new EasyVaultClient(apiKey);
+            EasyVaultClient client = new EasyVaultClient("url", apiKey);
             try
             {
                 Dictionary<string, string> secrets = client.GetSecrets();
