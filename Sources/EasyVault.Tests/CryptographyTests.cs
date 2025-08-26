@@ -139,7 +139,7 @@ namespace EasyVault.Tests
         public void DecryptSecrets_ShouldReturnEmptyCollection_WhenNoEncryptedData()
         {
             // Arrange
-            _vault.SecretKeyHashSha512 = TestKey.SHA512();
+            _vault.SecretKeyHashSha512 = TestKey.Sha512();
             _vault.EncryptedData = string.Empty;
 
             // Act

@@ -39,7 +39,7 @@ namespace EasyVault.Server.Database
             {
                 throw new ArgumentException("Key cannot be null or empty.", nameof(key));
             }
-            if (SecretKeyHashSha512 != key.SHA512())
+            if (SecretKeyHashSha512 != key.Sha512())
             {
                 throw new UnauthorizedAccessException("Invalid decryption key provided.");
             }
@@ -66,7 +66,7 @@ namespace EasyVault.Server.Database
                 throw new ArgumentException("Secrets cannot be null or empty.", nameof(secrets));
             }
 
-            SecretKeyHashSha512 = key.SHA512();
+            SecretKeyHashSha512 = key.Sha512();
             string secretsJson = JsonSerializer.Serialize(secrets);
             byte[] keyBytes = DeriveKeyFromPassword(key);
             EncryptedData = EncryptStringAes(secretsJson, keyBytes);

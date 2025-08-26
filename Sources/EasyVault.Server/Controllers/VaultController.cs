@@ -32,7 +32,7 @@ namespace EasyVault.Server.Controllers
             {
                 return [];
             }
-            string keyHash = key.SHA512();
+            string keyHash = key.Sha512();
             var foundVault = await _dbContext.Vaults
                 .OrderByDescending(v => v.CreatedAt)
                 .FirstOrDefaultAsync(v => v.SecretKeyHashSha512 == keyHash);
