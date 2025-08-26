@@ -88,13 +88,6 @@ namespace EasyVault.Server.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("hash_algorithm");
 
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("BLOB")
-                        .HasColumnName("row_version");
-
                     b.Property<byte[]>("Salt")
                         .IsRequired()
                         .HasColumnType("BLOB")

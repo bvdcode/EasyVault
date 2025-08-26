@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyVault.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250826213714_Initial")]
+    [Migration("20250826220222_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -90,13 +90,6 @@ namespace EasyVault.Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("hash_algorithm");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("BLOB")
-                        .HasColumnName("row_version");
 
                     b.Property<byte[]>("Salt")
                         .IsRequired()

@@ -33,7 +33,6 @@ namespace EasyVault.Server.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    row_version = table.Column<byte[]>(type: "BLOB", rowVersion: true, nullable: false),
                     secret_key_hash_sha512 = table.Column<string>(type: "TEXT", nullable: false),
                     hash_algorithm = table.Column<string>(type: "TEXT", nullable: false),
                     encrypted_data = table.Column<string>(type: "TEXT", nullable: false),

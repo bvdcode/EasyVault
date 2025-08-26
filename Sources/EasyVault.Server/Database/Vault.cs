@@ -2,7 +2,6 @@
 using EasyVault.Server.Models;
 using EasyExtensions.Extensions;
 using System.Security.Cryptography;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using EasyExtensions.EntityFrameworkCore.Abstractions;
 
@@ -11,10 +10,6 @@ namespace EasyVault.Server.Database
     [Table("vaults")]
     public class Vault : BaseEntity<Guid>
     {
-        [Timestamp]
-        [Column("row_version")]
-        public byte[] RowVersion { get; set; } = BitConverter.GetBytes(DateTime.UtcNow.Ticks);
-
         [Column("secret_key_hash_sha512")]
         public string SecretKeyHashSha512 { get; set; } = string.Empty;
 
