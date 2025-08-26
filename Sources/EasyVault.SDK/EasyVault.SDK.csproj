@@ -20,8 +20,8 @@
 
 	<ItemGroup>
 		<None Include="vault.png" Pack="true" PackagePath="" />
-		<PackageReference Include="System.Text.Json" Version="9.0.7" />
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.7" />
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.7" />
+		<PackageReference Include="System.Text.Json" Version="9.0.8" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.8" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.8" />
 	</ItemGroup>
 </Project>
