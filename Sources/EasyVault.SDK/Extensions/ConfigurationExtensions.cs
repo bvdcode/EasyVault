@@ -14,14 +14,14 @@ namespace EasyVault.SDK.Extensions
         /// Adds secrets from the EasyVault API to the configuration through In-Memory collection.
         /// </summary>
         /// <param name="configuration">The configuration to add secrets to.</param>
-        /// <param name="serverUrl">Base server url</param>
+        /// <param name="serverUrlKey">The configuration key for the Vault API URL.</param>
         /// <param name="configurationKey">The configuration key for the API key.</param>
         /// <param name="throwIfError">Whether to throw an exception if no secrets are found.</param>
         /// <param name="ignoreInDevelopment">Whether to ignore secrets in development environment.</param>
         /// <returns>The updated configuration.</returns>
         /// <exception cref="ArgumentException">Thrown when the configuration key is not set or is not a valid GUID.</exception>
         /// <exception cref="InvalidOperationException">Thrown when no secrets are found for the API key.</exception>
-        public static ConfigurationManager AddSecrets(this ConfigurationManager configuration, string serverUrl,
+        public static ConfigurationManager AddSecrets(this ConfigurationManager configuration, string serverUrlKey = "VaultApiUrl",
             string configurationKey = "VaultApiKey", bool throwIfError = true, bool ignoreInDevelopment = true)
         {
             string? keyValue = configuration[configurationKey];
@@ -41,6 +41,11 @@ namespace EasyVault.SDK.Extensions
                 {
                     return configuration;
                 }
+            }
+            string? serverUrl = configuration[serverUrlKey];
+            if (string.IsNullOrWhiteSpace(serverUrl))
+            {
+                throw new ArgumentException(serverUrlKey, $"Configuration key '{serverUrlKey}' is not set.");
             }
             EasyVaultClient client = new EasyVaultClient(serverUrl, apiKey);
             try
