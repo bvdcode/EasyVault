@@ -1,58 +1,68 @@
-![CI](https://github.com/bvdcode/EasyVault/actions/workflows/publish-release.yml/badge.svg)
+[![CI](https://github.com/bvdcode/EasyVault/actions/workflows/publish-release.yml/badge.svg)](https://github.com/bvdcode/EasyVault/actions/workflows/publish-release.yml)
+[![Release](https://img.shields.io/github/v/release/bvdcode/EasyVault?sort=semver)](https://github.com/bvdcode/EasyVault/releases)
+[![Docker Pulls](https://img.shields.io/docker/pulls/bvdcode/EasyVault)](https://hub.docker.com/r/bvdcode/EasyVault)
+[![Image Size](https://img.shields.io/docker/image-size/bvdcode/EasyVault/latest)](https://hub.docker.com/r/bvdcode/EasyVault/tags)
+[![CodeFactor](https://www.codefactor.io/repository/github/bvdcode/EasyVault/badge)](https://www.codefactor.io/repository/github/bvdcode/EasyVault)
+[![Nuget](https://img.shields.io/nuget/dt/EasyVault?color=%239100ff)](https://www.nuget.org/packages/EasyVault/)
+[![Static Badge](https://img.shields.io/badge/fuget-f88445?logo=readme&logoColor=white)](https://www.fuget.org/packages/EasyVault)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bvdcode/EasyVault/.github%2Fworkflows%2Fpublish-release.yml)](https://github.com/bvdcode/EasyVault/actions)
+[![NuGet version (EasyVault)](https://img.shields.io/nuget/v/EasyVault.svg?label=stable)](https://www.nuget.org/packages/EasyVault/)
+![GitHub repo size](https://img.shields.io/github/repo-size/bvdcode/EasyVault)
 [![License](https://img.shields.io/github/license/bvdcode/EasyVault)](LICENSE)
 
 # EasyVault
 
-Lightweight secrets storage service for developers: simple REST API, encrypted data storage in DB and minimal SDK for .NET.
+Lightweight, self‑contained secrets service — a single Docker image with a built‑in Web UI. Run the container, open the UI, and manage secrets without extra setup.
 
 ## What's inside
 
-- AES-256 (PBKDF2-SHA256) for data encryption in DB; key is not stored (only SHA-512 password hash is saved).
-- IP and User-Agent based access restrictions for secrets.
-- SQLite by default, migrations are applied automatically.
-- Health-check at `/api/v1/health` endpoint.
-- Simple .NET SDK (Dictionary and typed property mapping).
+- Single image, built‑in UI (served from the same server at `/`).
+- AES‑256 (PBKDF2‑SHA256) at rest; only a SHA‑512 of the password is stored.
+- Per‑secret IP and User‑Agent allowlists (wildcards supported).
+- SQLite by default; migrations apply automatically.
+- Health check at `/api/v1/health`.
+- Minimal .NET SDK (Dictionary or typed mapping).
 
-## Quick start
+## Quick start (UI‑first)
 
 In Docker (locally):
 
 ```powershell
-# Build image
+# Build the image
 docker build -t easyvault:local -f .\Sources\EasyVault.Server\Dockerfile .\Sources
 
-# Run container
+# Run the container
 docker run --name easyvault -p 8080:8080 -v easyvault_data:/data easyvault:local
+
+# Open the UI
+# Go to http://localhost:8080 and manage secrets from the admin panel.
 ```
 
-Local run without Docker:
+Local run without Docker (optional):
 
 ```powershell
 cd .\Sources\EasyVault.Server
 dotnet run
 ```
 
-By default, server listens on port `8080`. DB path: `/data/easyvault.db` (for Docker run).
+By default the server listens on `8080`. The UI is available at `/`. DB path: `/data/easyvault.db` (for Docker).
 
-## Configuration
+## Configuration (optional)
 
 Settings in `Sources/EasyVault.Server/appsettings.json`:
 
 ```json
 {
   "SqliteConnectionString": "Data Source=/data/easyvault.db;Cache=Shared;Foreign Keys=True;Pooling=True;Mode=ReadWriteCreate;",
-  "AllowedOrigins": [
-    "http://localhost:5173",
-    "https://vault.company.name"
-  ]
+  "AllowedOrigins": ["http://localhost:5173", "https://vault.company.name"]
 }
 ```
 
-These values can be overridden with ASP.NET Core environment variables.
+You can override these with ASP.NET Core environment variables.
 
 ## API (brief)
 
-1) Create/update "vault" (encrypt and save):
+1. Create/update vault (encrypt and save) — the UI does this for you:
 
 ```
 POST /api/v1/vault/{password}
@@ -60,7 +70,7 @@ Content-Type: application/json
 
 [
   {
-    "keyId": "b7c1e6b6-4c5a-4c9c-9d31-0bb2d6bf9b4a",
+    "keyId": "b7c1e6b6-4321-4c9c-1234-0bb2d6bf9b4a",
     "appName": "MyApp",
     "values": { "DB_PASSWORD": "supersecret", "API_TOKEN": "abcdef" },
     "allowedAddresses": ["127.0.0.1", "10.0.*"],
@@ -69,7 +79,7 @@ Content-Type: application/json
 ]
 ```
 
-2) Get secrets by `keyId` (access granted by IP/UA; "vault" must be "unsealed" after request to step 1):
+2. Get secrets by `keyId` (allowed by IP/UA; vault must be unsealed, the UI handles unseal):
 
 ```
 GET /api/v1/vault/secrets/{keyId}?format=json|plain
@@ -78,16 +88,18 @@ GET /api/v1/vault/secrets/{keyId}?format=json|plain
 - `format=json` — returns `{ "KEY": "VALUE" }`.
 - `format=plain` — returns strings like `KEY=VALUE`.
 
-Note: password (`{password}`) is used only for encryption/decryption and is not stored in DB (only SHA-512 hash is stored).
+Also available: `GET /api/v1/vault/{password}` — decrypts the latest vault for this password and unseals in‑memory cache.
 
-## .NET SDK
+Note: the password (`{password}`) is used only for encryption/decryption and is not stored (only its SHA‑512 hash).
+
+## .NET SDK (optional)
 
 Client usage example:
 
 ```csharp
 using EasyVault.SDK;
 
-var client = new EasyVaultClient("http://localhost:8080", new Guid("b7c1e6b6-4c5a-4c9c-9d31-0bb2d6bf9b4a"));
+var client = new EasyVaultClient("http://localhost:8080", new Guid("b7c1e6b6-1234-4c9c-4321-0bb2d6bf9b4a"));
 
 // Key-value dictionary
 var map = client.GetSecrets();
