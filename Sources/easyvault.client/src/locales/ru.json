@@ -1,0 +1,66 @@
+{
+  "loginPage": {
+    "passwordTitle": "Введите ключ шифрования:",
+    "loginButton": "Подключиться",
+    "infoMessage": "Когда вы подключитесь, хранилище будет распечатано",
+    "emptyPasswordError": "Пожалуйста, введите свой ключ"
+  },
+  "settings": {
+    "language": "Язык",
+    "darkMode": "Тема",
+    "logout": "Сменить ключ шифрования"
+  },
+  "vaultPage": {
+    "tabs": {
+      "list": "Сейфы",
+      "settings": "Настройки"
+    }
+  },
+  "vaultList": {
+    "fetchError": "Не удается получить данные с сервера - {{error}}",
+    "loadingMessage": "Загружаю ваши секреты...",
+    "title": "Ваши секреты извлечены с указанным ключом: {{keyPart}}",
+    "emptyMessage": "Пусто - давайте что-нибудь создадим?",
+    "addNewEntry": "Добавить новую запись",
+    "newEntryAppName": "Новое приложение #{{number}}",
+    "saveSuccess": "Значения секретов были успешно сохранены",
+    "saveError": "Ошибка при сохранении значений секретов - {{error}}",
+    "columns": {
+      "actions": "Действия",
+      "appName": "Приложение",
+      "secretsCount": "Секреты"
+    },
+    "editEntry": "Редактировать",
+    "deleteEntry": "Удалить",
+    "confirmDeleteTitle": "Удалить секретную запись",
+    "confirmDeleteDescription": "Вы уверены, что хотите удалить секрет для приложения '{{appName}}'?",
+    "confirmDeleteConfirm": "Удалить",
+    "deleteSuccess": "Ключ будет удалён, когда вы сохраните изменения",
+    "saveEntries": "Сохранить",
+    "confirmEditTitle": "Редактировать секретную запись",
+    "noChanges": "Измените какие-нибудь строки, чтобы сохранить значения",
+    "editSuccess": "Значения были обновлены - не забудьте их сохранить",
+    "duplicateNameError": "Имя приложения должно быть уникальным",
+    "nameAdjusted": "Имя приложения было автоматически изменено на '{{newName}}', чтобы обеспечить уникальность."
+  },
+  "common": {
+    "cancel": "Отмена",
+    "confirm": "Подтвердить",
+    "add": "Добавить"
+  },
+  "vaultEdit": {
+    "userAgentPlaceholder": "User agent или идентификатор SDK",
+    "allowedUserAgentsLabel": "Разрешенные User Agents",
+    "allowedAddressesLabel": "Разрешенные IP-адреса",
+    "appNameLabel": "Имя приложения",
+    "secretValuesLabel": "Секретные значения",
+    "keyPlaceholder": "Ключ",
+    "valuePlaceholder": "Значение",
+    "appNamePlaceholder": "Название приложения",
+    "addressPlaceholder": "IP-адрес, напр. 192.168.100.*",
+    "apiKeyLabel": "API ключ",
+    "apiKeyPlaceholder": "API ключ...",
+    "apiKeyCopied": "Ключ был скопирован в буфер обмена",
+    "linkCopied": "Ссылка была скопирована в буфер обмена"
+  }
+}

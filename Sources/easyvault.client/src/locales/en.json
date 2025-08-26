@@ -1,0 +1,66 @@
+{
+  "loginPage": {
+    "passwordTitle": "Enter your encryption key:",
+    "loginButton": "Connect",
+    "infoMessage": "When you connect, the Vault will be unsealed",
+    "emptyPasswordError": "Please enter your key"
+  },
+  "settings": {
+    "language": "Language",
+    "darkMode": "Theme",
+    "logout": "Change encryption key"
+  },
+  "vaultPage": {
+    "tabs": {
+      "list": "Vaults",
+      "settings": "Settings"
+    }
+  },
+  "vaultList": {
+    "fetchError": "Can't receive data from server - {{error}}",
+    "loadingMessage": "Loading your secrets...",
+    "title": "Your secrets retrieved with specified key: {{keyPart}}",
+    "emptyMessage": "Empty - let's create something?",
+    "addNewEntry": "Add new entry",
+    "newEntryAppName": "New app #{{number}}",
+    "saveSuccess": "Secret values ​​were saved successfully.",
+    "saveError": "Error saving secret values ​​- {{error}}",
+    "columns": {
+      "actions": "Actions",
+      "appName": "App name",
+      "secretsCount": "Secrets"
+    },
+    "editEntry": "Edit",
+    "deleteEntry": "Delete",
+    "confirmDeleteTitle": "Delete secret entry",
+    "confirmDeleteDescription": "Are you sure you want to delete secret for the '{{appName}}' application?",
+    "confirmDeleteConfirm": "Delete",
+    "deleteSuccess": "The key will be deleted when you save your changes",
+    "saveEntries": "Save",
+    "confirmEditTitle": "Edit secret entry",
+    "noChanges": "Change some rows to save the values",
+    "editSuccess": "The values were updated - don't forget to save them",
+    "duplicateNameError": "Application name must be unique",
+    "nameAdjusted": "The application name has been automatically adjusted to '{{newName}}' to ensure uniqueness."
+  },
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "add": "Add"
+  },
+  "vaultEdit": {
+    "userAgentPlaceholder": "User agent or SDK identifier",
+    "allowedUserAgentsLabel": "Allowed User Agents",
+    "allowedAddressesLabel": "Allowed IP Addresses",
+    "appNameLabel": "Application Name",
+    "secretValuesLabel": "Secret Values",
+    "keyPlaceholder": "Key",
+    "valuePlaceholder": "Value",
+    "appNamePlaceholder": "App name",
+    "addressPlaceholder": "IP Address, ex. 192.168.100.*",
+    "apiKeyLabel": "API key",
+    "apiKeyPlaceholder": "API Key...",
+    "apiKeyCopied": "The key was copied to clipboard",
+    "linkCopied": "The link was copied to clipboard"
+  }
+}
