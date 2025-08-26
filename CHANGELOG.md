@@ -6,6 +6,7 @@ EasyVault is a lightweight secrets service that focuses on the essentials: encry
 This first public preview delivers a minimal-yet-solid foundation for local use and small services.
 
 ### Highlights
+
 - Simple REST API with encrypted-at-rest storage (AES‑256 with PBKDF2‑SHA256; only a SHA‑512 of the password is stored).
 - “Unseal” model backed by in‑memory cache: decrypt once with your password, then fetch by `keyId` while the process stays warm.
 - Access controls per secret via IP patterns and User‑Agent patterns (with wildcard support).
@@ -14,12 +15,14 @@ This first public preview delivers a minimal-yet-solid foundation for local use 
 - Small .NET SDK: get a `Dictionary<string,string>` or map to a typed config object (case‑insensitive by property name).
 
 ### API (short overview)
+
 - POST `/api/v1/vault/{password}` — Encrypt and persist an array of `VaultSecret`.
-- GET  `/api/v1/vault/{password}` — Decrypt latest vault with this password and unseal the in‑memory cache.
-- GET  `/api/v1/vault/secrets/{keyId}?format=json|plain` — Return values for a single `keyId` if unsealed and allowed by IP/UA.
+- GET `/api/v1/vault/{password}` — Decrypt latest vault with this password and unseal the in‑memory cache.
+- GET `/api/v1/vault/secrets/{keyId}?format=json|plain` — Return values for a single `keyId` if unsealed and allowed by IP/UA.
 - Health: `/api/v1/health`.
 
 `VaultSecret` shape:
+
 ```json
 {
   "keyId": "b7c1e6b6-4c5a-4c9c-9d31-0bb2d6bf9b4a",
@@ -31,13 +34,16 @@ This first public preview delivers a minimal-yet-solid foundation for local use 
 ```
 
 ### Quick start
+
 Run locally without Docker:
+
 ```powershell
 cd .\Sources\EasyVault.Server
 dotnet run
 ```
 
 Local Docker build:
+
 ```powershell
 # build the image
 docker build -t easyvault:local -f .\Sources\EasyVault.Server\Dockerfile .\Sources
@@ -49,6 +55,7 @@ docker run --name easyvault -p 8080:8080 -v easyvault_data:/data easyvault:local
 Configuration is in `Sources/EasyVault.Server/appsettings.json` and can be overridden via ASP.NET Core environment variables. CORS origins are controlled by `AllowedOrigins`.
 
 ### .NET SDK example
+
 ```csharp
 using EasyVault.SDK;
 
@@ -67,14 +74,15 @@ public class MySecrets
 }
 ```
 
-### Known limitations (preview)
+### You have to know
+
 - Unseal state is in‑memory; it resets on restart and isn’t shared across instances.
 - No multi‑tenant isolation or RBAC; access relies on possession of the password and per‑secret IP/UA rules.
-- Only SQLite is wired in this repo; external DBs are not included yet.
+- Only SQLite is wired in this repo; external DBs are not included.
 
 ### What’s next
+
 - Optional request signing (HMAC).
-- Minimal admin UI for editing secrets.
 - Packaging and deployment docs (container registry, Helm chart).
 
 — Enjoy, and please report issues or ideas!
