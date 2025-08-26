@@ -1,3 +1,15 @@
+[![CI](https://github.com/bvdcode/EasyVault/actions/workflows/publish-release.yml/badge.svg)](https://github.com/bvdcode/EasyVault/actions/workflows/publish-release.yml)
+[![Release](https://img.shields.io/github/v/release/bvdcode/EasyVault?sort=semver)](https://github.com/bvdcode/EasyVault/releases)
+[![Docker Pulls](https://img.shields.io/docker/pulls/bvdcode/EasyVault)](https://hub.docker.com/r/bvdcode/EasyVault)
+[![Image Size](https://img.shields.io/docker/image-size/bvdcode/EasyVault/latest)](https://hub.docker.com/r/bvdcode/EasyVault/tags)
+[![CodeFactor](https://www.codefactor.io/repository/github/bvdcode/EasyVault/badge)](https://www.codefactor.io/repository/github/bvdcode/EasyVault)
+[![Nuget](https://img.shields.io/nuget/dt/EasyVault?color=%239100ff)](https://www.nuget.org/packages/EasyVault/)
+[![Static Badge](https://img.shields.io/badge/fuget-f88445?logo=readme&logoColor=white)](https://www.fuget.org/packages/EasyVault)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bvdcode/EasyVault/.github%2Fworkflows%2Fpublish-release.yml)](https://github.com/bvdcode/EasyVault/actions)
+[![NuGet version (EasyVault)](https://img.shields.io/nuget/v/EasyVault.svg?label=stable)](https://www.nuget.org/packages/EasyVault/)
+![GitHub repo size](https://img.shields.io/github/repo-size/bvdcode/EasyVault)
+[![License](https://img.shields.io/github/license/bvdcode/EasyVault)](LICENSE)
+
 # EasyVault
 
 > A pragmatic secrets bag for developers who just want it to work.
