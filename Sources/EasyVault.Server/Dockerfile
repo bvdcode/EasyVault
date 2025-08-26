@@ -6,6 +6,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS with-node
 RUN apt-get update
 RUN curl -sL https://deb.nodesource.com/setup_22.x | bash
 RUN apt-get -y install nodejs
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 FROM with-node AS build
 ARG BUILD_CONFIGURATION=Release
