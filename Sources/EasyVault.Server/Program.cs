@@ -1,10 +1,10 @@
 using EasyVault.Server.Database;
 using EasyVault.Server.Services;
 using EasyVault.Server.Healthchecks;
+using Microsoft.EntityFrameworkCore;
 using EasyExtensions.AspNetCore.Extensions;
 using EasyExtensions.EntityFrameworkCore.Extensions;
 using EasyExtensions.EntityFrameworkCore.HealthChecks;
-using EasyExtensions.EntityFrameworkCore.Npgsql.Extensions;
 
 namespace EasyVault.Server
 {
@@ -16,7 +16,7 @@ namespace EasyVault.Server
             string[] corsOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
                 ?? throw new ArgumentNullException(null, "Allowed origins cannot be null.");
             builder.Services.AddControllers();
-            builder.Services.AddPostgresDbContext<AppDbContext>(builder.Configuration)
+            builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlite(builder.Configuration["SqliteConnectionString"]))
                 .AddDefaultCorsWithOrigins(corsOrigins)
                 .AddSingleton<IVault, MemoryVaultService>()
                 .AddHealthChecks()
