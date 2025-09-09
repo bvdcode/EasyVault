@@ -27,17 +27,48 @@ Lightweight, self‑contained Zero-Trust secrets service — a single Docker ima
 
 ## Quick start (UI‑first)
 
+### Docker Hub (recommended)
+
+Pull and run with persistence:
+
+```powershell
+docker pull bvdcode/easyvault:latest
+docker run --name easyvault -p 8080:8080 -v easyvault_data:/data -d bvdcode/easyvault:latest
+# UI: http://localhost:8080
+```
+
+Or with Docker Compose (Traefik example):
+
+```yaml
+services:
+  vault:
+    image: bvdcode/easyvault:latest
+    restart: always
+    # if you don't have Traefik:
+    # ports:
+    # - "8080:8080"
+    volumes:
+      - /data/vault:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vault.rule=Host(`vault.${ROOT_DOMAIN}`)"
+```
+
+Open the Web UI at your domain (e.g., https://vault.${ROOT_DOMAIN}) and manage secrets from the UI.
+
 In Docker (locally):
 
 ```powershell
-# Build the image
+### From source (optional)
+
+```powershell
+# Build the image from this repo
 docker build -t easyvault:local -f .\Sources\EasyVault.Server\Dockerfile .\Sources
 
-# Run the container
+# Run locally
 docker run --name easyvault -p 8080:8080 -v easyvault_data:/data easyvault:local
-
-# Open the UI
-# Go to http://localhost:8080 and manage secrets from the admin panel.
+# UI: http://localhost:8080
+```
 ```
 
 Local run without Docker (optional):
