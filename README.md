@@ -12,7 +12,7 @@
 
 # EasyVault
 
-> Live: [easyvault.belov.us](https://easyvault.belov.us)
+> Live: [easyvault.belov.us](https://easyvault.belov.us) - The key you enter will encrypt your secrets (Easy)
 
 Lightweight, self‑contained secrets service — a single Docker image with a built‑in Web UI. Run the container, open the UI, and manage secrets without extra setup.
 
