@@ -109,18 +109,12 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
         appName: t("vaultList.newEntryAppName", {
           number: prevData.length + 1,
         }),
-        allowedAddresses: ["172.*.*.*"],
-        allowedUserAgents: ["ef", "EasyVault.Api/1.0.0"],
+        allowedAddresses: ["172.*.*.*", "*", "This sample allows all IPs"],
+        allowedUserAgents: ["curl/*", "*", "This sample allows all UAs"],
         values: {
-          PostgresHost: "postgres-server",
-          PostgresPort: "5432",
-          PostgresDatabase: "",
-          PostgresUsername: "",
-          PostgresPassword: "",
-          JwtKey: getRandomString(64),
-          JwtIssuer: "app",
-          JwtAudience: "client",
-          SentryDsn: "abc:123@glitchtip.company.domain/1",
+          POSTGRES_PASSWORD: getRandomString(8),
+          "Jwt:Key": getRandomString(32),
+          SampleApiKey: getRandomString(16),
         },
       },
     ]);
