@@ -26,7 +26,7 @@ namespace EasyVault.SDK.Extensions
         /// <returns>The updated configuration.</returns>
         /// <exception cref="ArgumentException">Thrown when the configuration key is not set or is not a valid GUID.</exception>
         /// <exception cref="InvalidOperationException">Thrown when no secrets are found for the API key.</exception>
-        public static ConfigurationManager AddSecrets(this ConfigurationManager configuration, string serverUrlKey = DefaultServerUrlKey,
+        public static IConfigurationManager AddSecrets(this IConfigurationManager configuration, string serverUrlKey = DefaultServerUrlKey,
             string configurationKey = "VaultApiKey", bool throwIfError = true, bool ignoreInDevelopment = true)
         {
             // Try flat key first, then nested section key as fallback
