@@ -11,6 +11,11 @@ namespace EasyVault.SDK.Extensions
     public static class ConfigurationExtensions
     {
         /// <summary>
+        /// Represents the configuration key used to specify the default server URL for the Vault API.
+        /// </summary>
+        public const string DefaultServerUrlKey = "VaultApiUrl";
+
+        /// <summary>
         /// Adds secrets from the EasyVault API to the configuration through In-Memory collection.
         /// </summary>
         /// <param name="configuration">The configuration to add secrets to.</param>
@@ -21,7 +26,7 @@ namespace EasyVault.SDK.Extensions
         /// <returns>The updated configuration.</returns>
         /// <exception cref="ArgumentException">Thrown when the configuration key is not set or is not a valid GUID.</exception>
         /// <exception cref="InvalidOperationException">Thrown when no secrets are found for the API key.</exception>
-        public static ConfigurationManager AddSecrets(this ConfigurationManager configuration, string serverUrlKey = "VaultApiUrl",
+        public static ConfigurationManager AddSecrets(this ConfigurationManager configuration, string serverUrlKey = DefaultServerUrlKey,
             string configurationKey = "VaultApiKey", bool throwIfError = true, bool ignoreInDevelopment = true)
         {
             // Try flat key first, then nested section key as fallback
