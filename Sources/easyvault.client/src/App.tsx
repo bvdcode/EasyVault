@@ -1,11 +1,11 @@
 import "./App.css";
-import { Box, CssBaseline, Fab } from "@mui/material";
+import { GitHub } from "@mui/icons-material";
 import { LoginPage, VaultPage } from "./pages";
 import "react-toastify/dist/ReactToastify.css";
+import { Box, CssBaseline, Fab } from "@mui/material";
 import { ConfirmProvider } from "material-ui-confirm";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { GitHub } from "@mui/icons-material";
 
 function App() {
   return (
