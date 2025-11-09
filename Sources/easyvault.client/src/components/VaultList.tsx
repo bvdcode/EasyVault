@@ -1,9 +1,9 @@
 import {
   Box,
-  IconButton,
-  LinearProgress,
   Paper,
   Typography,
+  IconButton,
+  LinearProgress,
 } from "@mui/material";
 import { t } from "i18next";
 import { VaultData } from "../types";
@@ -12,21 +12,45 @@ import { VaultEntryEditForm } from ".";
 import { VaultApiService } from "../services";
 import { confirm } from "material-ui-confirm";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { VaultEntryEditFormRef } from "./VaultEntryEditForm";
 import { Add, Delete, Edit, Save } from "@mui/icons-material";
 import { DataGrid, GridColDef, GridActionsCellItem } from "@mui/x-data-grid";
 
 interface VaultListProps {
   password: string;
+  vaultData?: VaultData[];
+  onVaultDataChange?: (data: VaultData[]) => void;
 }
 
-const VaultList: React.FC<VaultListProps> = ({ password }) => {
+const VaultList: React.FC<VaultListProps> = ({
+  password,
+  vaultData: externalVaultData,
+  onVaultDataChange,
+}) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [changed, setChanged] = useState(false);
   const editFormRef = useRef<VaultEntryEditFormRef>(null);
-  const [vaultData, setVaultData] = useState<VaultData[]>([]);
+  const [internalVaultData, setInternalVaultData] = useState<VaultData[]>([]);
+
+  // Use external data if provided, otherwise use internal state
+  const vaultData = externalVaultData ?? internalVaultData;
+
+  const updateVaultData = useCallback(
+    (updater: VaultData[] | ((prev: VaultData[]) => VaultData[])) => {
+      if (onVaultDataChange) {
+        if (typeof updater === "function") {
+          onVaultDataChange(updater(vaultData));
+        } else {
+          onVaultDataChange(updater);
+        }
+      } else {
+        setInternalVaultData(updater);
+      }
+    },
+    [onVaultDataChange, vaultData],
+  );
   const columns: GridColDef<VaultData>[] = [
     {
       field: "appName",
@@ -74,12 +98,12 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
       try {
         setLoading(true);
         const data = await VaultApiService.getVaultData(password);
-        setVaultData(data);
+        updateVaultData(data);
       } catch (err) {
         toast.error(
           t("vaultList.fetchError", {
             error: err instanceof Error ? err.message : String(err),
-          })
+          }),
         );
       } finally {
         setLoading(false);
@@ -87,7 +111,7 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
     };
 
     fetchVaultData();
-  }, [navigate, password]);
+  }, [navigate, password, updateVaultData]);
 
   const getRandomString = (length: number): string => {
     const characters =
@@ -95,14 +119,14 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
     let result = "";
     for (let i = 0; i < length; i++) {
       result += characters.charAt(
-        Math.floor(Math.random() * characters.length)
+        Math.floor(Math.random() * characters.length),
       );
     }
     return result;
   };
 
   const handleAddNewEntry = () => {
-    setVaultData((prevData) => [
+    updateVaultData((prevData: VaultData[]) => [
       ...prevData,
       {
         keyId: crypto.randomUUID(),
@@ -130,7 +154,7 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
       toast.error(
         t("vaultList.saveError", {
           error: err instanceof Error ? err.message : String(err),
-        })
+        }),
       );
     } finally {
       setLoading(false);
@@ -153,7 +177,7 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
           (existingItem) =>
             existingItem.keyId !== updatedData.keyId &&
             existingItem.appName.toLowerCase() ===
-              updatedData.appName.toLowerCase()
+              updatedData.appName.toLowerCase(),
         );
 
         if (isDuplicateName) {
@@ -167,14 +191,14 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
               (existingItem) =>
                 existingItem.keyId !== updatedData.keyId &&
                 existingItem.appName.toLowerCase() ===
-                  updatedData.appName.toLowerCase()
+                  updatedData.appName.toLowerCase(),
             );
 
             counter++;
           }
 
           toast.info(
-            t("vaultList.nameAdjusted", { newName: updatedData.appName })
+            t("vaultList.nameAdjusted", { newName: updatedData.appName }),
           );
         }
 
@@ -190,10 +214,10 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
           values: sortedValues,
         };
 
-        setVaultData((prevData) =>
-          prevData.map((existingItem) =>
-            existingItem.keyId === finalData.keyId ? finalData : existingItem
-          )
+        updateVaultData((prevData: VaultData[]) =>
+          prevData.map((existingItem: VaultData) =>
+            existingItem.keyId === finalData.keyId ? finalData : existingItem,
+          ),
         );
 
         const updatedJson = JSON.stringify(updatedData);
@@ -219,8 +243,8 @@ const VaultList: React.FC<VaultListProps> = ({ password }) => {
       confirmationButtonProps: { color: "error" },
     }).then((result) => {
       if (result.confirmed) {
-        setVaultData((prevData) =>
-          prevData.filter((i) => i.keyId !== item.keyId)
+        updateVaultData((prevData: VaultData[]) =>
+          prevData.filter((i: VaultData) => i.keyId !== item.keyId),
         );
         toast.success(t("vaultList.deleteSuccess"));
         setChanged(true);
