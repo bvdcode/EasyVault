@@ -271,7 +271,7 @@ const VaultList: React.FC<VaultListProps> = ({
   };
 
   return (
-    <Paper>
+    <Paper sx={{ width: "100%", height: "100%", overflow: "hidden" }}>
       <Box
         maxWidth={800}
         margin="auto"
@@ -279,6 +279,7 @@ const VaultList: React.FC<VaultListProps> = ({
         display="flex"
         flexDirection="column"
         alignItems="center"
+        height="100%"
       >
         <Typography variant="h6" gutterBottom>
           {t("vaultList.title", {
@@ -290,7 +291,7 @@ const VaultList: React.FC<VaultListProps> = ({
         {!loading && (
           <>
             {vaultData && vaultData.length > 0 ? (
-              <Box sx={{ height: 631, width: "100%" }}>
+              <Box sx={{ flexGrow: 1, width: "100%", minHeight: 0 }}>
                 <DataGrid
                   rows={vaultData}
                   columns={columns}

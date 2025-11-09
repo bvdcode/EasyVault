@@ -36,7 +36,8 @@ const VaultPage: React.FC = () => {
         justifyContent: "flex-start",
         margin: "auto",
         width: "100%",
-        height: "100%",
+        height: "100vh",
+        overflow: "hidden",
       }}
     >
       <Tabs
@@ -53,7 +54,8 @@ const VaultPage: React.FC = () => {
         alignItems="center"
         justifyContent="flex-start"
         width="100%"
-        height="100%"
+        flex={1}
+        overflow="auto"
         padding={2}
       >
         {selectedTab === 0 && (
