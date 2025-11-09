@@ -9,10 +9,15 @@ import {
   InputLabel,
   SelectChangeEvent,
 } from "@mui/material";
+import {
+  Upload,
+  Download,
+  Brightness4,
+  Brightness7,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAppTheme } from "../contexts/ThemeContext";
-import { Brightness4, Brightness7 } from "@mui/icons-material";
 
 const Settings: React.FC = () => {
   const navigate = useNavigate();
@@ -21,6 +26,16 @@ const Settings: React.FC = () => {
 
   const handleLanguageChange = (event: SelectChangeEvent<string>) => {
     i18n.changeLanguage(event.target.value);
+  };
+
+  const handleExport = () => {
+    // Implement export functionality
+    alert(t("settings.exportAlert"));
+  };
+
+  const handleImport = () => {
+    // Implement import functionality
+    alert(t("settings.importAlert"));
   };
 
   return (
@@ -81,6 +96,30 @@ const Settings: React.FC = () => {
             fullWidth
           >
             {t("settings.logout")}
+          </Button>
+        </Box>
+
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          gap={1}
+        >
+          <Button
+            onClick={handleExport}
+            variant="outlined"
+            fullWidth
+            endIcon={<Download />}
+          >
+            {t("settings.export")}
+          </Button>
+          <Button
+            onClick={handleImport}
+            variant="outlined"
+            fullWidth
+            endIcon={<Upload />}
+          >
+            {t("settings.import")}
           </Button>
         </Box>
       </Stack>

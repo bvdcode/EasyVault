@@ -8,7 +8,9 @@
   "settings": {
     "language": "Language",
     "darkMode": "Theme",
-    "logout": "Change encryption key"
+    "logout": "Change encryption key",
+    "export": "Export",
+    "import": "Import"
   },
   "vaultPage": {
     "tabs": {
