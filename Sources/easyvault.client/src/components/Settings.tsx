@@ -231,6 +231,14 @@ const Settings: React.FC<SettingsProps> = ({ vaultData, onImport }) => {
           gap={1}
         >
           <Button
+            onClick={handleImport}
+            variant="outlined"
+            fullWidth
+            endIcon={<Upload />}
+          >
+            {t("settings.import")}
+          </Button>
+          <Button
             onClick={handleExport}
             variant="outlined"
             fullWidth
@@ -238,14 +246,6 @@ const Settings: React.FC<SettingsProps> = ({ vaultData, onImport }) => {
             disabled={!vaultData || vaultData.length === 0}
           >
             {t("settings.export")}
-          </Button>
-          <Button
-            onClick={handleImport}
-            variant="outlined"
-            fullWidth
-            endIcon={<Upload />}
-          >
-            {t("settings.import")}
           </Button>
         </Box>
       </Stack>
