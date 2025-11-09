@@ -99,7 +99,12 @@ const VaultList: React.FC<VaultListProps> = ({
       try {
         setLoading(true);
         const data = await VaultApiService.getVaultData(password);
-        updateVaultData(data);
+        // Write fetched data either to external state (if provided) or to internal state
+        if (onVaultDataChange) {
+          onVaultDataChange(data);
+        } else {
+          setInternalVaultData(data);
+        }
       } catch (err) {
         toast.error(
           t("vaultList.fetchError", {
@@ -112,7 +117,7 @@ const VaultList: React.FC<VaultListProps> = ({
     };
 
     fetchVaultData();
-  }, [navigate, password, updateVaultData]);
+  }, [navigate, password, onVaultDataChange]);
 
   const getRandomString = (length: number): string => {
     const characters =
