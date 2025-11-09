@@ -12,6 +12,7 @@ const VaultPage: React.FC = () => {
   const password = location.state?.password;
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const [vaultData, setVaultData] = useState<VaultData[]>([]);
+  const [hasImported, setHasImported] = useState(false);
 
   useEffect(() => {
     if (!password) {
@@ -21,6 +22,7 @@ const VaultPage: React.FC = () => {
 
   const handleImport = (data: VaultData[]) => {
     setVaultData(data);
+    setHasImported(true);
     // Switch to vault list tab to show imported data
     setSelectedTab(0);
   };
@@ -59,6 +61,7 @@ const VaultPage: React.FC = () => {
             password={password}
             vaultData={vaultData}
             onVaultDataChange={setVaultData}
+            skipInitialFetch={hasImported}
           />
         )}
         {selectedTab === 1 && (

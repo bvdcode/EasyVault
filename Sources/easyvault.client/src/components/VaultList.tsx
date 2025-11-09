@@ -21,12 +21,15 @@ interface VaultListProps {
   password: string;
   vaultData?: VaultData[];
   onVaultDataChange?: (data: VaultData[]) => void;
+  // When true, component will not fetch from API on mount; used after import
+  skipInitialFetch?: boolean;
 }
 
 const VaultList: React.FC<VaultListProps> = ({
   password,
   vaultData: externalVaultData,
   onVaultDataChange,
+  skipInitialFetch = false,
 }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -95,6 +98,11 @@ const VaultList: React.FC<VaultListProps> = ({
       navigate("/login");
       return;
     }
+    if (skipInitialFetch) {
+      // Using imported data; mark as changed so Save is enabled
+      setChanged(true);
+      return;
+    }
     const fetchVaultData = async () => {
       try {
         setLoading(true);
@@ -117,7 +125,7 @@ const VaultList: React.FC<VaultListProps> = ({
     };
 
     fetchVaultData();
-  }, [navigate, password, onVaultDataChange]);
+  }, [navigate, password, onVaultDataChange, skipInitialFetch]);
 
   const getRandomString = (length: number): string => {
     const characters =
