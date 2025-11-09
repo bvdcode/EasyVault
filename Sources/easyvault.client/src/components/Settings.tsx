@@ -16,21 +16,22 @@ import {
   Brightness7,
 } from "@mui/icons-material";
 import { useRef } from "react";
-import { VaultData } from "../types";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAppTheme } from "../contexts/ThemeContext";
+import { useVault } from "../contexts/VaultContext";
+import { VaultData } from "../types";
 
 interface SettingsProps {
-  vaultData?: VaultData[];
-  onImport?: (data: VaultData[]) => void;
+  onTabChange: (tab: number) => void;
 }
 
-const Settings: React.FC<SettingsProps> = ({ vaultData, onImport }) => {
+const Settings: React.FC<SettingsProps> = ({ onTabChange }) => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const { isDarkMode, toggleTheme } = useAppTheme();
+  const { vaultData, importVaultData } = useVault();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleLanguageChange = (event: SelectChangeEvent<string>) => {
@@ -137,8 +138,9 @@ const Settings: React.FC<SettingsProps> = ({ vaultData, onImport }) => {
           return;
         }
 
-        onImport?.(parsedData);
+        importVaultData(parsedData);
         toast.success(t("settings.importSuccess"));
+        onTabChange(0);
       } catch (error) {
         toast.error(
           t("settings.importError", {

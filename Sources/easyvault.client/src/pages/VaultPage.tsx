@@ -1,9 +1,9 @@
-import { VaultData } from "../types";
 import { useTranslation } from "react-i18next";
 import React, { useEffect, useState } from "react";
 import { Settings, VaultList } from "../components";
 import { Box, Paper, Tab, Tabs } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useVault } from "../contexts/VaultContext";
 
 const VaultPage: React.FC = () => {
   const { t } = useTranslation();
@@ -11,21 +11,17 @@ const VaultPage: React.FC = () => {
   const navigate = useNavigate();
   const password = location.state?.password;
   const [selectedTab, setSelectedTab] = useState<number>(0);
-  const [vaultData, setVaultData] = useState<VaultData[]>([]);
-  const [hasImported, setHasImported] = useState(false);
+  const { setPassword, loadVaultData } = useVault();
 
   useEffect(() => {
     if (!password) {
       navigate("/login");
+      return;
     }
-  }, [navigate, password]);
 
-  const handleImport = (data: VaultData[]) => {
-    setVaultData(data);
-    setHasImported(true);
-    // Switch to vault list tab to show imported data
-    setSelectedTab(0);
-  };
+    setPassword(password);
+    loadVaultData(password);
+  }, [password, navigate, setPassword, loadVaultData]);
 
   return (
     <Paper
@@ -58,17 +54,8 @@ const VaultPage: React.FC = () => {
         overflow="auto"
         padding={2}
       >
-        {selectedTab === 0 && (
-          <VaultList
-            password={password}
-            vaultData={vaultData}
-            onVaultDataChange={setVaultData}
-            skipInitialFetch={hasImported}
-          />
-        )}
-        {selectedTab === 1 && (
-          <Settings vaultData={vaultData} onImport={handleImport} />
-        )}
+        {selectedTab === 0 && <VaultList />}
+        {selectedTab === 1 && <Settings onTabChange={setSelectedTab} />}
       </Box>
     </Paper>
   );
