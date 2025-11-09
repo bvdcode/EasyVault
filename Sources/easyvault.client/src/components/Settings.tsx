@@ -165,7 +165,7 @@ const Settings: React.FC<SettingsProps> = ({ vaultData, onImport }) => {
         accept=".json"
         style={{ display: "none" }}
       />
-      <Stack spacing={4} mt={3} maxWidth={400} mx="auto">
+      <Stack spacing={4} mt={3} maxWidth={600} mx="auto">
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <InputLabel id="language-select-label">
             {t("settings.darkMode")}

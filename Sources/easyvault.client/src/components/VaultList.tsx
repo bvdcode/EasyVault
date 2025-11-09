@@ -170,6 +170,10 @@ const VaultList: React.FC<VaultListProps> = ({
       content: <VaultEntryEditForm ref={editFormRef} item={itemCopy} />,
       cancellationText: t("common.cancel"),
       confirmationText: t("common.confirm"),
+      dialogProps: {
+        maxWidth: "md",
+        fullWidth: true,
+      },
     }).then((result) => {
       if (result.confirmed && editFormRef.current) {
         const updatedData = editFormRef.current.getFormData();
