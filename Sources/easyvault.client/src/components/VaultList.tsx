@@ -41,7 +41,8 @@ const VaultList: React.FC<VaultListProps> = ({
     (updater: VaultData[] | ((prev: VaultData[]) => VaultData[])) => {
       if (onVaultDataChange) {
         if (typeof updater === "function") {
-          onVaultDataChange(updater(vaultData));
+          const currentData = externalVaultData ?? internalVaultData;
+          onVaultDataChange(updater(currentData));
         } else {
           onVaultDataChange(updater);
         }
@@ -49,7 +50,7 @@ const VaultList: React.FC<VaultListProps> = ({
         setInternalVaultData(updater);
       }
     },
-    [onVaultDataChange, vaultData],
+    [onVaultDataChange, externalVaultData, internalVaultData],
   );
   const columns: GridColDef<VaultData>[] = [
     {
